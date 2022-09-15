@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
+import { NumberTable } from './share/numberTable'
 
-type ViewState = 'idle' | 'bewertung'
 
 @Component({
   selector: 'app-root',
@@ -9,6 +9,6 @@ type ViewState = 'idle' | 'bewertung'
 })
 export class AppComponent {
   title = 'primzahlenSpiel';
-
+  numberTable!: NumberTable;
 
 }

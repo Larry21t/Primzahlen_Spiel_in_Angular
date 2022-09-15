@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { NumberTable } from '../share/numberTable';
 
-export const start: number = 1;
+const start: number = 1;
 const hoechsteZahl: number = 100;
 const breite: number = 10;
 
@@ -10,13 +11,13 @@ const breite: number = 10;
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
-  numbersInTable: number[] = this.fillArray(hoechsteZahl);
-  breite: number[] = this.fillArray(breite);
-  hoehe: number[] = this.fillArray(Math.round(this.numbersInTable.length / this.breite.length + 0.4999999)) //immer aufrunden
-  filteredNumbers: number[] = this.sieben([...this.numbersInTable]);
-
-  // @Output() showBewertungEvent = new EventEmitter<number>(); //Muss man vielleicht eine Klasse/Interface(kein Komponent) Table machen?
-
+  volleTabelle: NumberTable = new NumberTable(start, breite, hoechsteZahl);
+  breite: number[] = (new NumberTable(start, breite, breite)).getZahlenArray();//evtl. kann man schon in der Klasse NumberTable die Breite als Array definieren
+  hoehe: number[] = (new NumberTable(start, this.volleTabelle.getHoehe(), this.volleTabelle.getHoehe())).getZahlenArray();
+  // numbersInTable: number[] = this.fillArray(hoechsteZahl);
+  // breite: number[] = this.fillArray(breite);
+  // hoehe: number[] = this.fillArray(hoehe)
+  gefiltertesArray: any[] = this.sieben([...this.volleTabelle.getZahlenArray()]);
 
   constructor() { }
 
@@ -24,15 +25,15 @@ export class TableComponent implements OnInit {
   }
 
 
-  fillArray(highestNumber: number) : number[]{
-    let i: number = start;
-    let myArray: number[] = [];
-    while(i <= highestNumber){
-      myArray.push(i);
-      i++
-    }
-    return myArray;
-  }
+  // fillArray(highestNumber: number) : number[]{
+  //   let i: number = start;
+  //   let myArray: number[] = [];
+  //   while(i <= highestNumber){
+  //     myArray.push(i);
+  //     i++
+  //   }
+  //   return myArray;
+  // }
 
 
   sieben(anArray: any[]): any[]{
@@ -54,14 +55,14 @@ export class TableComponent implements OnInit {
   bewerten(clickedZelle: any): any{
     let inhalt: number = parseInt(clickedZelle.path[0].innerText);
     let istPrimzahl: boolean = false;
-    if(this.filteredNumbers.includes(inhalt)){
+    if(this.gefiltertesArray.includes(inhalt)){
       istPrimzahl = true;
-      clickedZelle.path[0].bgColor = 'green'
+      clickedZelle.path[0].bgColor = 'green' //evtl. Komponente Zelle machen?
     }
     else{
       clickedZelle.path[0].bgColor = 'red'
     }
-
+    return istPrimzahl;
   }
 
 
