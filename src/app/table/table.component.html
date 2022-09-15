@@ -1,10 +1,11 @@
 <table>
   <tbody>
     <tr *ngFor="let row of hoehe">
-      <td *ngFor="let col of breite; index as i" (click)="showBewertung($event)">
+      <td *ngFor="let col of breite; index as i" (click)="bewerten($event)">
         {{ numbersInTable[i + (breite.length * (row-1))] }}
       </td>
     </tr>
   </tbody>
 </table>
+<!-- <app-filter-table [fullTable]="numbersInTable"></app-filter-table> -->
 

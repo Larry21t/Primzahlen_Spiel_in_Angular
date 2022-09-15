@@ -9,7 +9,7 @@ import { BewerteterTableComponent } from './bewerteter-table/bewerteter-table.co
   declarations: [
     AppComponent,
     TableComponent,
-    BewerteterTableComponent
+    BewerteterTableComponent,
   ],
   imports: [
     BrowserModule
