@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NumberTable } from '../share/numberTable';
 
 const start: number = 1;
-const hoechsteZahl: number = 100;
+const hoechsteZahl: number = 200;
 const breite: number = 10;
 
 @Component({
@@ -14,26 +14,15 @@ export class TableComponent implements OnInit {
   volleTabelle: NumberTable = new NumberTable(start, breite, hoechsteZahl);
   breite: number[] = (new NumberTable(start, breite, breite)).getZahlenArray();//evtl. kann man schon in der Klasse NumberTable die Breite als Array definieren
   hoehe: number[] = (new NumberTable(start, this.volleTabelle.getHoehe(), this.volleTabelle.getHoehe())).getZahlenArray();
-  // numbersInTable: number[] = this.fillArray(hoechsteZahl);
-  // breite: number[] = this.fillArray(breite);
-  // hoehe: number[] = this.fillArray(hoehe)
   gefiltertesArray: any[] = this.sieben([...this.volleTabelle.getZahlenArray()]);
+
+
+  @Output() punktestandVeraendernEvent = new EventEmitter<boolean>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
-
-  // fillArray(highestNumber: number) : number[]{
-  //   let i: number = start;
-  //   let myArray: number[] = [];
-  //   while(i <= highestNumber){
-  //     myArray.push(i);
-  //     i++
-  //   }
-  //   return myArray;
-  // }
 
 
   sieben(anArray: any[]): any[]{
@@ -52,27 +41,21 @@ export class TableComponent implements OnInit {
     return anArray;
   }
 
-  bewerten(clickedZelle: any): any{
+
+
+  bewerten(clickedZelle: any){
     let inhalt: number = parseInt(clickedZelle.path[0].innerText);
     let istPrimzahl: boolean = false;
     if(this.gefiltertesArray.includes(inhalt)){
       istPrimzahl = true;
-      clickedZelle.path[0].bgColor = 'green' //evtl. Komponente Zelle machen?
+      clickedZelle.path[0].classList.add('primzahl')//evtl. Komponente oder Klasse/Interface Zelle machen? Diese hat dann die Eigenschaften Zahl, istPrimzahl und evtl. noch Farbe.
+      //anstatt direkt Farbe zu ändern einfach eine CSS-Klasse hinzufügen
+
     }
     else{
-      clickedZelle.path[0].bgColor = 'red'
+      clickedZelle.path[0].classList.add('keinePrimzahl');
     }
-    return istPrimzahl;
+    this.punktestandVeraendernEvent.emit(istPrimzahl);
+
   }
-
-
-
-  // showBewertung(eventClicked: any){
-  //   this.showBewertungEvent.emit(eventClicked.path[0].innerText);
-  // }
-
-  // getFilteredTable(eventFiltered: number[]){
-  //   this.filteredTable = eventFiltered;
-  // }
-
 }

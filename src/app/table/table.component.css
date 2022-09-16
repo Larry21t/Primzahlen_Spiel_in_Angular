@@ -8,4 +8,11 @@ td{
   text-align: center;
 }
 
+.primzahl{
+  background-color: green;
+}
+
+.keinePrimzahl{
+  background-color: red;
+}
 

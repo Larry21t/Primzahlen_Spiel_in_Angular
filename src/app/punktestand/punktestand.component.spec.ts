@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BewerteterTableComponent } from './bewerteter-table.component';
+import { PunktestandComponent } from './punktestand.component';
 
-describe('BewerteterTableComponent', () => {
-  let component: BewerteterTableComponent;
-  let fixture: ComponentFixture<BewerteterTableComponent>;
+describe('PunktestandComponent', () => {
+  let component: PunktestandComponent;
+  let fixture: ComponentFixture<PunktestandComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BewerteterTableComponent ]
+      declarations: [ PunktestandComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BewerteterTableComponent);
+    fixture = TestBed.createComponent(PunktestandComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

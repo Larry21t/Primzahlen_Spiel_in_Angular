@@ -1,2 +1,4 @@
-<app-table></app-table>
-<!-- <app-bewerteter-table *ngIf="viewState === 'bewertung'" [zelle]="zelle"></app-bewerteter-table> -->
+<!-- <app-table (punktestandVeraendernEvent)="punktestandVeraendern($event)"></app-table>
+<app-punktestand [punktestandEvent]="punktestandEvent"></app-punktestand> -->
+<app-table (punktestandVeraendernEvent)="punktestandVeraendern($event)"></app-table>
+<app-punktestand [punkte]="punktestand"></app-punktestand>
