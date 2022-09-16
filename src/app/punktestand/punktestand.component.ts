@@ -1,4 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { map } from 'rxjs';
+import { StateService } from '../state.service';
+
 
 @Component({
   selector: 'app-punktestand',
@@ -6,23 +9,18 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./punktestand.component.css']
 })
 export class PunktestandComponent implements OnInit {
-  @Input() punkte!: number;
 
-  constructor() { }
+  punktestand$ = this.service.state$.pipe(
+    map(state => state.punkteStand)
+  )
+
+  // punkte = this.punktestand$.pipe(
+  //   map(zahl => zahl + 3)
+  // );
+
+  constructor(public service: StateService ) { }
 
   ngOnInit(): void {
   }
-
-  // punktestandAktualisieren(istPrimzahl: any): number{
-  //   let punkte = 0;
-  //   if(istPrimzahl){
-  //     punkte = 1;
-  //   }
-  //   else{
-  //     punkte = -1;
-  //   }
-  //   return (this.punktestand + punkte);
-  // }
-
 
 }

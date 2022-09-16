@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { map } from 'rxjs';
 import { NumberTable } from '../share/numberTable';
+import { StateService } from '../state.service';
 
 const start: number = 1;
 const hoechsteZahl: number = 200;
@@ -12,14 +14,15 @@ const breite: number = 10;
 })
 export class TableComponent implements OnInit {
   volleTabelle: NumberTable = new NumberTable(start, breite, hoechsteZahl);
+  // numberTable$ = this.service.state$.pipe(
+  //   map(state => state.numberTable)
+  // );
   breite: number[] = (new NumberTable(start, breite, breite)).getZahlenArray();//evtl. kann man schon in der Klasse NumberTable die Breite als Array definieren
   hoehe: number[] = (new NumberTable(start, this.volleTabelle.getHoehe(), this.volleTabelle.getHoehe())).getZahlenArray();
   gefiltertesArray: any[] = this.sieben([...this.volleTabelle.getZahlenArray()]);
 
 
-  @Output() punktestandVeraendernEvent = new EventEmitter<boolean>();
-
-  constructor() { }
+  constructor(public service: StateService) { }
 
   ngOnInit(): void {
   }
@@ -44,18 +47,20 @@ export class TableComponent implements OnInit {
 
 
   bewerten(clickedZelle: any){
-    let inhalt: number = parseInt(clickedZelle.path[0].innerText);
-    let istPrimzahl: boolean = false;
-    if(this.gefiltertesArray.includes(inhalt)){
-      istPrimzahl = true;
-      clickedZelle.path[0].classList.add('primzahl')//evtl. Komponente oder Klasse/Interface Zelle machen? Diese hat dann die Eigenschaften Zahl, istPrimzahl und evtl. noch Farbe.
-      //anstatt direkt Farbe zu ändern einfach eine CSS-Klasse hinzufügen
-
+    if(!(clickedZelle.path[0].classList.contains('primzahl') || clickedZelle.path[0].classList.contains('keinePrimzahl'))){
+      let inhalt: number = parseInt(clickedZelle.path[0].innerText);
+      let istPrimzahl;
+      if(this.gefiltertesArray.includes(inhalt)){
+        istPrimzahl = true;
+        this.service.punktestandAktualisieren(istPrimzahl);
+        clickedZelle.path[0].classList.add('primzahl');//evtl. Komponente oder Klasse/Interface Zelle machen? Diese hat dann die Eigenschaften Zahl, istPrimzahl und evtl. noch Farbe.
+      }
+      else{
+        istPrimzahl = false;
+        this.service.punktestandAktualisieren(istPrimzahl)
+        clickedZelle.path[0].classList.add('keinePrimzahl');
+      }
     }
-    else{
-      clickedZelle.path[0].classList.add('keinePrimzahl');
-    }
-    this.punktestandVeraendernEvent.emit(istPrimzahl);
 
   }
 }
