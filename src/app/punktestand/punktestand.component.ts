@@ -14,11 +14,19 @@ export class PunktestandComponent implements OnInit {
     map(state => state.punkteStand)
   )
 
-  // punkte = this.punktestand$.pipe(
-  //   map(zahl => zahl + 3)
-  // );
+  // counter$ = this.service.state$.pipe(
+  //   map(state => state.counter)
+  // )
 
   constructor(public service: StateService ) { }
+
+  increment(){
+    this.service.dispatch('INCREMENT');
+  }
+
+  decrement(){
+    this.service.dispatch('DECREMENT')
+  }
 
   ngOnInit(): void {
   }

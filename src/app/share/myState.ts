@@ -1,8 +1,16 @@
 import { NumberTable } from "./numberTable";
 
 export interface MyState {
-  numberTable: NumberTable;
+  //numberTable: NumberTable;
   punkteStand: number;
-  istPrimzahl: boolean;
-  counter: number;
+
+
+  //Versuch: Anstatt eine Klasse Numbertable zu machen, schreibe ich alle Attribute mal hier hinein
+  // startZahl: number;
+  // hoechsteZahl: number;
+  // zahlenArray: number[];
+  // breite: number;
+  // hoehe: number;
+
+
 }

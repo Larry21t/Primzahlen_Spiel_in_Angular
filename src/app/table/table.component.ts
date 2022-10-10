@@ -14,12 +14,13 @@ const breite: number = 10;
 })
 export class TableComponent implements OnInit {
   volleTabelle: NumberTable = new NumberTable(start, breite, hoechsteZahl);
-  // numberTable$ = this.service.state$.pipe(
-  //   map(state => state.numberTable)
-  // );
+  // fullArray$ = this.service.state$.pipe(
+  //   map(state => state.zahlenArray)
+  // )
   breite: number[] = (new NumberTable(start, breite, breite)).getZahlenArray();//evtl. kann man schon in der Klasse NumberTable die Breite als Array definieren
   hoehe: number[] = (new NumberTable(start, this.volleTabelle.getHoehe(), this.volleTabelle.getHoehe())).getZahlenArray();
   gefiltertesArray: any[] = this.sieben([...this.volleTabelle.getZahlenArray()]);
+  // gefiltertesArray: any[] = this.sieben(this.fullArray$);
 
 
   constructor(public service: StateService) { }
@@ -49,15 +50,12 @@ export class TableComponent implements OnInit {
   bewerten(clickedZelle: any){
     if(!(clickedZelle.path[0].classList.contains('primzahl') || clickedZelle.path[0].classList.contains('keinePrimzahl'))){
       let inhalt: number = parseInt(clickedZelle.path[0].innerText);
-      let istPrimzahl;
       if(this.gefiltertesArray.includes(inhalt)){
-        istPrimzahl = true;
-        this.service.punktestandAktualisieren(istPrimzahl);
+        this.service.dispatch('INCREMENT')
         clickedZelle.path[0].classList.add('primzahl');//evtl. Komponente oder Klasse/Interface Zelle machen? Diese hat dann die Eigenschaften Zahl, istPrimzahl und evtl. noch Farbe.
       }
       else{
-        istPrimzahl = false;
-        this.service.punktestandAktualisieren(istPrimzahl)
+        this.service.dispatch('DECREMENT')
         clickedZelle.path[0].classList.add('keinePrimzahl');
       }
     }
