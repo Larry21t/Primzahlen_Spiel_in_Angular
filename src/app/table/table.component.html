@@ -3,6 +3,7 @@
     <tr *ngFor="let row of hoehe">
       <td *ngFor="let col of breite; index as i" (click)="bewerten($event)">
         {{ volleTabelle.getZahlenArray()[i + (volleTabelle.getBreite() * (row-1))] }}
+        <!-- {{ volleTabelle$ | async }} -->
       </td>
     </tr>
   </tbody>

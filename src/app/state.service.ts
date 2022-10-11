@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, shareReplay, startWith } from 'rxjs';
+import { BehaviorSubject, Observable, scan, shareReplay, startWith } from 'rxjs';
 import { MyState } from './share/myState';
-import { NumberTable } from './share/numberTable';
 
 const start: number = 1;
-const hoechsteZahl: number = 200;
-const breite: number = 10;
-
+const highestNr: number = 200;
+const breiteTable: number = 10;
 
 
 
@@ -17,31 +15,32 @@ const breite: number = 10;
 export class StateService {
   private state: MyState = {
     punkteStand: 0,
-
+    // startZahl: 1,
+    // breite: 10,
+    // hoechsteZahl: 200,
+    // hoehe: Math.round(highestNr/breiteTable + 0.49999999),
+    // zahlenArray: this.fillArray(start, highestNr)
   };
+
 
   state$ = new BehaviorSubject<MyState>(this.state);
 
   constructor() { }
 
-
-  // incrementCounter(){
-  //   this.state.counter++;
-  //   this.state$.next(this.state)
-  // }
-
-  // incrementCounter(){
-  //   this.state = {
-  //     ...this.state,
-  //     counter: this.state.counter + 1
-  //   }
-  //   this.state$.next(this.state)
-  // }
-
   dispatch(message: String){
     this.state = calculateState(this.state, message)
     this.state$.next(this.state)
   }
+
+  // fillArray(start: number, end: number) : number[]{
+  //   let i: number = start;
+  //   let myArray: number[] = [];
+  //   while(i <= end){
+  //     myArray.push(i);
+  //     i++
+  //   }
+  //   return myArray;
+  // }
 }
 
 
@@ -73,12 +72,31 @@ function calculateState(state: MyState, message: String): MyState {
 }
 
 
+
+// Nachrichten auf den Zustand reduzieren
+
+
 // const initialState = {
-//   counter: 0,
-//   anotherProperty: 'foobar'
+//   punkteStand: 0
 // };
+//const messages = ['INCREMENT', 'DECREMENT', 'INCREMENT'];
+//const result = messages.reduce(calculateState, initialState)
 
-// const messages = ['INCREMENT', 'DECREMENT', 'INCREMENT'];
 
 
-// const result = messages.reduce(calculateStateCounter, initialState)
+// Nachrichten reduzieren mit RxJS
+// const state$ = messages$.pipe(
+//   startWith('INIT'),
+//   scan(calculateState, initialState),
+//   shareReplay(1)
+// );
+
+
+
+// Test von Array.reduce()
+// const values = [1,2,3,4];
+// const reducer = (previous: number, current: number) => previous + current;
+// const result = values.reduce(reducer, 0)
+
+
+

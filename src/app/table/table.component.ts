@@ -1,7 +1,8 @@
+import { state } from '@angular/animations';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { map } from 'rxjs';
-import { NumberTable } from '../share/numberTable';
 import { StateService } from '../state.service';
+import  { NumberTable } from '../share/numberTable'
 
 const start: number = 1;
 const hoechsteZahl: number = 200;
@@ -14,11 +15,20 @@ const breite: number = 10;
 })
 export class TableComponent implements OnInit {
   volleTabelle: NumberTable = new NumberTable(start, breite, hoechsteZahl);
-  // fullArray$ = this.service.state$.pipe(
+  // volleTabelle$ = this.service.state$.pipe(
   //   map(state => state.zahlenArray)
   // )
+  // volleTabelle = this.volleTabelle$.subscribe //-> ich brauche hier mehr Wissen über Observables, deshalb im Buch weiterlesen
   breite: number[] = (new NumberTable(start, breite, breite)).getZahlenArray();//evtl. kann man schon in der Klasse NumberTable die Breite als Array definieren
+  // breite$ = this.service.state$.pipe(
+  //   map(state => state.breite)
+  // );
+  // breite: any[] = new Array(this.breite$);
   hoehe: number[] = (new NumberTable(start, this.volleTabelle.getHoehe(), this.volleTabelle.getHoehe())).getZahlenArray();
+  // hoehe$ = this.service.state$.pipe(
+  //   map(state => state.hoehe)
+  // );
+  // hoehe: any[] = new Array(this.hoehe$);
   gefiltertesArray: any[] = this.sieben([...this.volleTabelle.getZahlenArray()]);
   // gefiltertesArray: any[] = this.sieben(this.fullArray$);
 
