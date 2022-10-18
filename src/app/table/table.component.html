@@ -1,9 +1,9 @@
 <table>
   <tbody>
-    <tr *ngFor="let row of hoehe">
-      <td *ngFor="let col of breite; index as i" (click)="bewerten($event)">
-        {{ volleTabelle.getZahlenArray()[i + (volleTabelle.getBreite() * (row-1))] }}
-        <!-- {{ volleTabelle$ | async }} -->
+    <tr *ngFor="let row of hoehe; index as r">
+      <td *ngFor="let col of breite; index as c" (click)="bewerten($event)">
+        <!-- {{ volleTabelle.getZahlenArray()[c + (volleTabelle.getBreite() * (row-1))] }} -->
+        {{ volleTabelle[c + (breite.length * r)] }}
       </td>
     </tr>
   </tbody>

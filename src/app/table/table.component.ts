@@ -1,8 +1,7 @@
-import { state } from '@angular/animations';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { StateService } from '../state.service';
-import  { NumberTable } from '../share/numberTable'
+// import  { NumberTable } from '../share/numberTable'
 
 const start: number = 1;
 const hoechsteZahl: number = 200;
@@ -14,23 +13,38 @@ const breite: number = 10;
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
-  volleTabelle: NumberTable = new NumberTable(start, breite, hoechsteZahl);
-  // volleTabelle$ = this.service.state$.pipe(
-  //   map(state => state.zahlenArray)
-  // )
-  // volleTabelle = this.volleTabelle$.subscribe //-> ich brauche hier mehr Wissen über Observables, deshalb im Buch weiterlesen
-  breite: number[] = (new NumberTable(start, breite, breite)).getZahlenArray();//evtl. kann man schon in der Klasse NumberTable die Breite als Array definieren
-  // breite$ = this.service.state$.pipe(
-  //   map(state => state.breite)
-  // );
-  // breite: any[] = new Array(this.breite$);
-  hoehe: number[] = (new NumberTable(start, this.volleTabelle.getHoehe(), this.volleTabelle.getHoehe())).getZahlenArray();
-  // hoehe$ = this.service.state$.pipe(
-  //   map(state => state.hoehe)
-  // );
-  // hoehe: any[] = new Array(this.hoehe$);
-  gefiltertesArray: any[] = this.sieben([...this.volleTabelle.getZahlenArray()]);
-  // gefiltertesArray: any[] = this.sieben(this.fullArray$);
+  volleTabelle$ = this.service.state$.pipe(
+    map(state => state.zahlenArray)
+  )
+  volleTabelle: number[] = [];
+  subscription1: Subscription = this.volleTabelle$.subscribe(
+    (value: number[]) => {
+      for(let i = 0; i < value.length; i++){
+        this.volleTabelle.push(value[i]);
+      }
+    }
+  )
+  breite$ = this.service.state$.pipe(
+    map(state => state.breite)
+  );
+  breiteZahl: number = 0;
+  subscriptionBreite: Subscription = this.breite$.subscribe(
+    (value: number) => {
+      this.breiteZahl = value;
+    }
+  )
+  breite: number[] = new Array(this.breiteZahl);
+  hoehe$ = this.service.state$.pipe(
+    map(state => state.hoehe)
+  );
+  hoeheZahl: number = 0;
+  subscriptionHoehe: Subscription = this.hoehe$.subscribe(
+    (value: number) => {
+      this.hoeheZahl = value;
+    }
+  )
+  hoehe: number[] = new Array(this.hoeheZahl)
+  gefiltertesArray: any[] = this.sieben(this.volleTabelle);
 
 
   constructor(public service: StateService) { }
@@ -40,19 +54,20 @@ export class TableComponent implements OnInit {
 
 
   sieben(anArray: any[]): any[]{
-    anArray[anArray.indexOf(start)] = "X"
+    let gesiebtesArray: any[] = [...anArray]
+    gesiebtesArray[gesiebtesArray.indexOf(start)] = "X"
     let zahlenReihe = start + 1;
     let zahl = zahlenReihe + zahlenReihe; //Achtung gleiche Zeile wie unten nach erstem while{}
-    const highestNumber = anArray[anArray.length-1]
+    const highestNumber = gesiebtesArray[gesiebtesArray.length-1]
     while(zahlenReihe <= Math.sqrt(highestNumber)){
       while (zahl <= highestNumber){
-        anArray[anArray.indexOf(zahl)] = "X"
+        gesiebtesArray[gesiebtesArray.indexOf(zahl)] = "X"
         zahl += zahlenReihe
       }
       zahlenReihe += 1;
       zahl = zahlenReihe + zahlenReihe;
     }
-    return anArray;
+    return gesiebtesArray;
   }
 
 

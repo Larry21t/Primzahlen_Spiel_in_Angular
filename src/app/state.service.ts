@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, scan, shareReplay, startWith } from 'rxjs';
+import { BehaviorSubject, observable, Observable, of, timer, interval} from 'rxjs';
 import { MyState } from './share/myState';
 
-const start: number = 1;
+const startZahl: number = 1;
 const highestNr: number = 200;
 const breiteTable: number = 10;
+const initialPunkteStand = 0;
 
 
 
@@ -14,12 +15,12 @@ const breiteTable: number = 10;
 })
 export class StateService {
   private state: MyState = {
-    punkteStand: 0,
-    // startZahl: 1,
-    // breite: 10,
-    // hoechsteZahl: 200,
-    // hoehe: Math.round(highestNr/breiteTable + 0.49999999),
-    // zahlenArray: this.fillArray(start, highestNr)
+    punkteStand: initialPunkteStand,
+    startZahl: startZahl,
+    breite: breiteTable,
+    hoechsteZahl: highestNr,
+    hoehe: Math.round(highestNr/breiteTable + 0.49999999),
+    zahlenArray: this.fillArray(startZahl, highestNr)
   };
 
 
@@ -32,15 +33,15 @@ export class StateService {
     this.state$.next(this.state)
   }
 
-  // fillArray(start: number, end: number) : number[]{
-  //   let i: number = start;
-  //   let myArray: number[] = [];
-  //   while(i <= end){
-  //     myArray.push(i);
-  //     i++
-  //   }
-  //   return myArray;
-  // }
+  fillArray(start: number, end: number) : number[]{
+    let i: number = start;
+    let myArray: number[] = [];
+    while(i <= end){
+      myArray.push(i);
+      i++
+    }
+    return myArray;
+  }
 }
 
 
@@ -71,6 +72,8 @@ function calculateState(state: MyState, message: String): MyState {
   }
 }
 
+
+//Hier unten habe ich Dinge aus dem Angular Buch ausprobiert
 
 
 // Nachrichten auf den Zustand reduzieren
