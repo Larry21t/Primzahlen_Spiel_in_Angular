@@ -17,8 +17,8 @@ export class StateService {
   private state: MyState = {
     punkteStand: initialPunkteStand,
     startZahl: startZahl,
-    breite: breiteTable,
     hoechsteZahl: highestNr,
+    breite: breiteTable,
     hoehe: Math.round(highestNr/breiteTable + 0.49999999),
     zahlenArray: this.fillArray(startZahl, highestNr)
   };

@@ -20,13 +20,13 @@ export class PunktestandComponent implements OnInit {
 
   constructor(public service: StateService ) { }
 
-  increment(){
-    this.service.dispatch('INCREMENT');
-  }
+  // increment(){
+  //   this.service.dispatch('INCREMENT');
+  // }
 
-  decrement(){
-    this.service.dispatch('DECREMENT')
-  }
+  // decrement(){
+  //   this.service.dispatch('DECREMENT')
+  // }
 
   ngOnInit(): void {
   }

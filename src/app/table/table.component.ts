@@ -3,9 +3,6 @@ import { map, Subscription } from 'rxjs';
 import { StateService } from '../state.service';
 // import  { NumberTable } from '../share/numberTable'
 
-const start: number = 1;
-const hoechsteZahl: number = 200;
-const breite: number = 10;
 
 @Component({
   selector: 'app-table',
@@ -17,7 +14,7 @@ export class TableComponent implements OnInit {
     map(state => state.zahlenArray)
   )
   volleTabelle: number[] = [];
-  subscription1: Subscription = this.volleTabelle$.subscribe(
+  subscriptionVolleTabelle: Subscription = this.volleTabelle$.subscribe(
     (value: number[]) => {
       for(let i = 0; i < value.length; i++){
         this.volleTabelle.push(value[i]);
@@ -55,6 +52,15 @@ export class TableComponent implements OnInit {
 
   sieben(anArray: any[]): any[]{
     let gesiebtesArray: any[] = [...anArray]
+    let start$ = this.service.state$.pipe(
+      map(state => state.startZahl)
+    )
+    let start: number = 0;
+    start$.subscribe(
+      (value: number) => {
+        start = value
+      }
+    )
     gesiebtesArray[gesiebtesArray.indexOf(start)] = "X"
     let zahlenReihe = start + 1;
     let zahl = zahlenReihe + zahlenReihe; //Achtung gleiche Zeile wie unten nach erstem while{}
