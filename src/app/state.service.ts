@@ -3,7 +3,7 @@ import { BehaviorSubject, observable, Observable, of, timer, interval} from 'rxj
 import { MyState } from './share/myState';
 
 const startZahl: number = 1;
-const highestNr: number = 200;
+const highestNr: number = 100;
 const breiteTable: number = 10;
 const initialPunkteStand = 0;
 

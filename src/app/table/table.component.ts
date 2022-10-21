@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { map, Subscription } from 'rxjs';
+
 import { StateService } from '../state.service';
 // import  { NumberTable } from '../share/numberTable'
 
@@ -42,6 +43,8 @@ export class TableComponent implements OnInit {
   )
   hoehe: number[] = new Array(this.hoeheZahl)
   gefiltertesArray: any[] = this.sieben(this.volleTabelle);
+  primzahlen: number[] = this.gefiltertesArray.filter(zahl => zahl != "X")
+  gefundenePrimzahlen: number[] = [];
 
 
   constructor(public service: StateService) { }
@@ -84,12 +87,21 @@ export class TableComponent implements OnInit {
       if(this.gefiltertesArray.includes(inhalt)){
         this.service.dispatch('INCREMENT')
         clickedZelle.path[0].classList.add('primzahl');//evtl. Komponente oder Klasse/Interface Zelle machen? Diese hat dann die Eigenschaften Zahl, istPrimzahl und evtl. noch Farbe.
+        this.gefundenePrimzahlen.push(inhalt);
       }
       else{
         this.service.dispatch('DECREMENT')
-        clickedZelle.path[0].classList.add('keinePrimzahl');
+        clickedZelle.path[0].classList.add('keinePrimzahl'); //ich brauche ein ViewModel von der TAbelle, welche Zellen schon angeklickt sind und welche nicht.
       }
+      this.checkIfAllPrimzahlenAreFound()
     }
 
+
+  }
+
+  checkIfAllPrimzahlenAreFound(){
+    if(this.primzahlen.length === this.gefundenePrimzahlen.length){
+      setTimeout(function(){window.alert("Du hast alle Primzahlen gefunden!")}, 100)
+    }
   }
 }
